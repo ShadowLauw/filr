@@ -6,12 +6,14 @@ import { useRouter } from "next/navigation";
 export function SignOutButton() {
   const { isAuthenticated } = useConvexAuth();
   const { signOut } = useAuthActions();
+  const router = useRouter();
+
   return (
     <>
       {isAuthenticated && (
         <button
-          className="text-dark dark:text-light hover:text-violet-200"
-          onClick={() => void signOut()}
+          className="text-dark dark:text-light hover:cursor-pointer"
+          onClick={() => signOut().then(() => router.push("/"))}
         >
           Sign out
         </button>
@@ -28,7 +30,7 @@ export function SignInButton() {
     <>
       {!isAuthenticated && (
         <button
-          className="text-dark dark:text-light hover:text-violet-200"
+          className="text-dark dark:text-light hover:cursor-pointer"
           onClick={() => router.push("/login")}
         >
           Sign in
@@ -44,7 +46,7 @@ export function GetStartedButton() {
   return (
     <>
       <button
-        className="block mx-auto text-dark dark:text-light hover:bg-violet-300 bg-violet-400 w-3xs h-10 rounded-full m-4"
+        className="block mx-auto text-dark dark:text-light hover:cursor-pointer hover:bg-violet-500 bg-violet-400 w-3xs h-10 rounded-full m-4"
         onClick={() => router.push("/login")}
       >
         Get started!

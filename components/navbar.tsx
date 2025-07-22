@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SignInButton, SignOutButton } from "./login-buttons";
+import { SignInButton, SignOutButton } from "./LoginButtons";
 
 export default function Navbar() {
   return (
