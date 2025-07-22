@@ -8,19 +8,31 @@ export default function SignIn() {
   const { signIn } = useAuthActions();
   const [flow, setFlow] = useState<"signIn" | "signUp">("signIn");
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   return (
-    <div className="flex flex-col gap-8 w-96 mx-auto h-screen justify-center items-center">
-      <p>Log in to see the numbers</p>
+    <div className="flex flex-col gap-8 mx-auto pb-10 my-20 items-center w-xl border-2 border-violet-400 rounded-3xl overflow-clip">
+      <h1 className="text-white text-2xl bg-violet-400 px-4 py-4 w-full text-center">
+        Log in
+      </h1>
       <form
-        className="flex flex-col gap-2"
+        className="flex flex-col gap-4"
         onSubmit={(e) => {
           e.preventDefault();
           const formData = new FormData(e.target as HTMLFormElement);
           formData.set("flow", flow);
-          void signIn("password", formData).catch((error) => {
-            setError(error.message);
-          });
+          void signIn("password", formData)
+            .then(() => {
+              router.push("/");
+            })
+            .catch(() => {
+              setError(
+                //TODO MODIFY
+                flow === "signIn"
+                  ? "Could not sign in, did you mean to sign up?"
+                  : "Could not sign up, did you mean to sign in?",
+              );
+            });
         }}
       >
         <input
@@ -36,7 +48,7 @@ export default function SignIn() {
           placeholder="Password"
         />
         <button
-          className="bg-foreground text-background rounded-md"
+          className="bg-violet-400 text-white rounded-md mt-4"
           type="submit"
         >
           {flow === "signIn" ? "Sign in" : "Sign up"}
@@ -56,9 +68,7 @@ export default function SignIn() {
         </div>
         {error && (
           <div className="bg-red-500/20 border-2 border-red-500/50 rounded-md p-2">
-            <p className="text-foreground font-mono text-xs">
-              Error signing in: {error}
-            </p>
+            <p className="text-foreground font-mono text-xs">{error}</p>
           </div>
         )}
       </form>

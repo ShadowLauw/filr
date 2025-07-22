@@ -6,6 +6,7 @@ import {
 
 const isSignInPage = createRouteMatcher(["/signin"]);
 const isProtectedRoute = createRouteMatcher(["/server"]);
+const isHomePage = createRouteMatcher(["/"]);
 
 export default convexAuthNextjsMiddleware(async (request, { convexAuth }) => {
   // if (isSignInPage(request) && (await convexAuth.isAuthenticated())) {
@@ -13,6 +14,10 @@ export default convexAuthNextjsMiddleware(async (request, { convexAuth }) => {
   // }
   if (isProtectedRoute(request) && !(await convexAuth.isAuthenticated())) {
     return nextjsMiddlewareRedirect(request, "/");
+  }
+
+  if (isHomePage(request) && (await convexAuth.isAuthenticated())) {
+    return nextjsMiddlewareRedirect(request, "/dashboard");
   }
 });
 
