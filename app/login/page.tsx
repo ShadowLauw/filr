@@ -48,7 +48,7 @@ export default function SignIn() {
           placeholder="Password"
         />
         <button
-          className="bg-violet-400 text-white rounded-md mt-4"
+          className="bg-violet-400 text-white rounded-md mt-4 h-12 hover:cursor-pointer hover:bg-violet-500"
           type="submit"
         >
           {flow === "signIn" ? "Sign in" : "Sign up"}
