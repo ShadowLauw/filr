@@ -3,9 +3,11 @@
 import { useState } from "react";
 import AddBookmarkDialog from "@/components/AddBookmarkDialog";
 import { RecentBookmarks } from "@/components/RecentBookmarks";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const [addBookmark, setAddBookmark] = useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -28,6 +30,14 @@ export default function Dashboard() {
       <div className="flex">
         <div className="w-1/2 flex flex-col px-6">
           <RecentBookmarks />
+          <div className="flex justify-center">
+            <button
+              className="hover:cursor-pointer hover:bg-violet-500 bg-violet-400 rounded-md mt-4 h-10 w-50 flex items-center justify-center"
+              onClick={() => router.push("/dashboard/bookmarks")}
+            >
+              See all my bookmarks
+            </button>
+          </div>
         </div>
         <div className="w-1/2 flex flex-col px-6">
           <h2 className="text-center m-4 font-semibold text-lg">

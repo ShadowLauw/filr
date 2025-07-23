@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { paginationOptsValidator } from "convex/server";
 
 export const listBookmarks = query({
   args: {
@@ -41,5 +42,31 @@ export const addBookmark = mutation({
     });
 
     return id;
+  },
+});
+
+export const pagingBookmarks = query({
+  args: { paginationOpts: paginationOptsValidator },
+
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (userId === null) {
+      throw new Error("Client is not authenticated!");
+    }
+
+    const bookmarks = await ctx.db
+      .query("bookmarks")
+      .withIndex("by_user", (q) => q.eq("user", userId))
+      .order("desc")
+      .paginate(args.paginationOpts);
+
+    return bookmarks;
+  },
+});
+
+export const deleteBookmark = mutation({
+  args: { id: v.id("bookmarks") },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.id);
   },
 });
