@@ -10,4 +10,9 @@ export default defineSchema({
   numbers: defineTable({
     value: v.number(),
   }),
+  bookmarks: defineTable({
+    user: v.id("users"),
+    name: v.string(),
+    link: v.string(),
+  }).index("by_user", ["user"]),
 });
