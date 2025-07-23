@@ -23,7 +23,11 @@ export default function AddBookmarkDialog({
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const name = formData.get("name") as string;
-    const link = formData.get("link") as string;
+    let link = formData.get("link") as string;
+    //Normalize url
+    if (!/^https?:\/\//i.test(link)) {
+      link = "https://" + link;
+    }
 
     await addBookmarkMutation({ name, link });
     onClose();
@@ -33,7 +37,7 @@ export default function AddBookmarkDialog({
     <Dialog open={open} onClose={onClose} className="relative z-50">
       <DialogBackdrop className="fixed inset-0 bg-black/60" />
       <div className="flex flex-col gap-8 items-center justify-center fixed inset-0">
-        <DialogPanel className="relative border-8 border-violet-400 p-5 rounded-xl max-w-lg overflow-clip">
+        <DialogPanel className="relative border-8 border-violet-400 p-5 rounded-xl max-w-lg overflow-clip bg-background">
           <button
             onClick={onClose}
             className="absolute top-0 right-0 rounded-full size-6 flex items-center hover:cursor-pointer"
@@ -53,7 +57,7 @@ export default function AddBookmarkDialog({
             <input
               placeholder="Link"
               name="link"
-              type="url"
+              type="text"
               className="border-violet-400 p-2 rounded-md border-1"
             />
             <button
